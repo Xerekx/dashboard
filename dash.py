@@ -16,15 +16,15 @@ st.title("Esports Dashboard - League of Legends")
 # Filtros
 st.sidebar.header("Filtros")
 
-# Filtrar filas donde 'm' es 'team' para obtener los nombres de los equipos
-team_rows = data[data['m'] == 'team']
-teams = team_rows['p teamname'].unique()
+# Filtrar filas donde la columna 'm' es 'team' para obtener los equipos
+team_rows = data[data['m'] == 'team']  # Cambia 'm' por el nombre real de la columna si es diferente
+teams = team_rows['p teamname'].unique()  # Cambia 'p teamname' si es diferente
 
 # Agregar opción 'Todos' al principio de la lista
 selected_team = st.sidebar.selectbox("Selecciona un equipo", options=["Todos"] + list(teams))
 
 # Filtro por jugador
-players = data['player'].unique()
+players = data['player'].unique() if 'player' in data.columns else []  # Asegurarse de que 'player' exista
 selected_player = st.sidebar.selectbox("Selecciona un jugador", options=["Todos"] + list(players))
 
 # Filtro por estadísticas de equipo
@@ -39,9 +39,9 @@ selected_player_stat = st.sidebar.selectbox("Selecciona una estadística de juga
 filtered_data = data.copy()
 
 if selected_team != "Todos":
-    filtered_data = filtered_data[filtered_data['team'] == selected_team]
+    filtered_data = filtered_data[filtered_data['p teamname'] == selected_team]
 
-if selected_player != "Todos":
+if selected_player != "Todos" and 'player' in data.columns:
     filtered_data = filtered_data[filtered_data['player'] == selected_player]
 
 # Mostrar estadísticas
@@ -50,12 +50,12 @@ st.header("Resultados Filtrados")
 # Estadísticas de equipo
 st.subheader("Estadísticas de Equipo")
 if selected_team != "Todos":
-    team_stats = filtered_data.groupby('team')[selected_team_stat].mean()
+    team_stats = filtered_data.groupby('p teamname')[selected_team_stat].mean()
     st.write(team_stats)
 
 # Estadísticas de jugador
 st.subheader("Estadísticas de Jugador")
-if selected_player != "Todos":
+if selected_player != "Todos" and 'player' in data.columns:
     player_stats = filtered_data.groupby('player')[selected_player_stat].mean()
     st.write(player_stats)
 
@@ -65,14 +65,14 @@ st.header("Gráficos")
 # Gráfico de estadísticas de equipo
 if selected_team != "Todos":
     fig_team = px.bar(
-        filtered_data.groupby('team')[selected_team_stat].mean().reset_index(),
-        x='team', y=selected_team_stat,
+        filtered_data.groupby('p teamname')[selected_team_stat].mean().reset_index(),
+        x='p teamname', y=selected_team_stat,
         title=f"{selected_team_stat} por equipo"
     )
     st.plotly_chart(fig_team)
 
 # Gráfico de estadísticas de jugador
-if selected_player != "Todos":
+if selected_player != "Todos" and 'player' in data.columns:
     fig_player = px.bar(
         filtered_data.groupby('player')[selected_player_stat].mean().reset_index(),
         x='player', y=selected_player_stat,
