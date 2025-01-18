@@ -18,7 +18,7 @@ st.sidebar.header("Filtros")
 
 # Filtrar filas donde la columna 'm' es 'team' para obtener los equipos
 team_rows = data[data['position'] == 'team']  # Cambia 'm' por el nombre real de la columna si es diferente
-teams = team_rows['teamname'].unique()  # Cambia 'p teamname' si es diferente
+teams = team_rows['teamname'].unique()  # Cambia 'teamname' si es diferente
 
 # Agregar opción 'Todos' al principio de la lista
 selected_team = st.sidebar.selectbox("Selecciona un equipo", options=["Todos"] + list(teams))
@@ -50,7 +50,7 @@ st.header("Resultados Filtrados")
 # Estadísticas de equipo
 st.subheader("Estadísticas de Equipo")
 if selected_team != "Todos":
-    team_stats = filtered_data.groupby('p teamname')[selected_team_stat].mean()
+    team_stats = filtered_data.groupby('teamname')[selected_team_stat].mean()
     st.write(team_stats)
 
 # Estadísticas de jugador
@@ -65,8 +65,8 @@ st.header("Gráficos")
 # Gráfico de estadísticas de equipo
 if selected_team != "Todos":
     fig_team = px.bar(
-        filtered_data.groupby('p teamname')[selected_team_stat].mean().reset_index(),
-        x='p teamname', y=selected_team_stat,
+        filtered_data.groupby('teamname')[selected_team_stat].mean().reset_index(),
+        x='teamname', y=selected_team_stat,
         title=f"{selected_team_stat} por equipo"
     )
     st.plotly_chart(fig_team)
