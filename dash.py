@@ -39,7 +39,7 @@ selected_player_stat = st.sidebar.selectbox("Selecciona una estadística de juga
 filtered_data = data.copy()
 
 if selected_team != "Todos":
-    filtered_data = filtered_data[filtered_data['p teamname'] == selected_team]
+    filtered_data = filtered_data[filtered_data['teamname'] == selected_team]
 
 if selected_player != "Todos" and 'player' in data.columns:
     filtered_data = filtered_data[filtered_data['player'] == selected_player]
