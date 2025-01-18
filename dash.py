@@ -17,8 +17,8 @@ st.title("Esports Dashboard - League of Legends")
 st.sidebar.header("Filtros")
 
 # Filtrar filas donde la columna 'm' es 'team' para obtener los equipos
-team_rows = data[data['m'] == 'team']  # Cambia 'm' por el nombre real de la columna si es diferente
-teams = team_rows['p teamname'].unique()  # Cambia 'p teamname' si es diferente
+team_rows = data[data['position'] == 'team']  # Cambia 'm' por el nombre real de la columna si es diferente
+teams = team_rows['teamname'].unique()  # Cambia 'p teamname' si es diferente
 
 # Agregar opción 'Todos' al principio de la lista
 selected_team = st.sidebar.selectbox("Selecciona un equipo", options=["Todos"] + list(teams))
